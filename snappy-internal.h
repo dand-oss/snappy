@@ -38,12 +38,15 @@ namespace internal {
 
 class WorkingMemory {
  public:
+  SNAPPY_EXPORT
   WorkingMemory() : large_table_(NULL) { }
+  SNAPPY_EXPORT
   ~WorkingMemory() { delete[] large_table_; }
 
   // Allocates and clears a hash table using memory in "*this",
   // stores the number of buckets in "*table_size" and returns a pointer to
   // the base of the hash table.
+  SNAPPY_EXPORT
   uint16* GetHashTable(size_t input_size, int* table_size);
 
  private:
@@ -64,6 +67,7 @@ class WorkingMemory {
 //
 // Returns an "end" pointer into "op" buffer.
 // "end - op" is the compressed size of "input".
+SNAPPY_EXPORT
 char* CompressFragment(const char* input,
                        size_t input_length,
                        char* op,

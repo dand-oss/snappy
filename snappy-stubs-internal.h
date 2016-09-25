@@ -419,15 +419,18 @@ class Varint {
   // was found in the range, stores it in *OUTPUT and returns a pointer just
   // past the last byte of the varint32. Else returns NULL.  On success,
   // "result <= limit".
+  SNAPPY_EXPORT
   static const char* Parse32WithLimit(const char* ptr, const char* limit,
                                       uint32* OUTPUT);
 
   // REQUIRES   "ptr" points to a buffer of length sufficient to hold "v".
   // EFFECTS    Encodes "v" into "ptr" and returns a pointer to the
   //            byte just past the last encoded byte.
+  SNAPPY_EXPORT
   static char* Encode32(char* ptr, uint32 v);
 
   // EFFECTS    Appends the varint representation of "value" to "*s".
+  SNAPPY_EXPORT
   static void Append32(string* s, uint32 value);
 };
 
