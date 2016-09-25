@@ -39,6 +39,11 @@
 #ifndef THIRD_PARTY_SNAPPY_SNAPPY_H__
 #define THIRD_PARTY_SNAPPY_SNAPPY_H__
 
+#ifdef WIN32
+    #include <BaseTsd.h>
+    typedef SSIZE_T ssize_t;
+#endif // WIN32
+
 #include <stddef.h>
 #include <string>
 
