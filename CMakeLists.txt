@@ -4,6 +4,13 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(snappy)
 
+###############
+# ASI default settings
+list(APPEND CMAKE_MODULE_PATH "$ENV{ASI}/cmake/Modules")
+include(asv_cmake_defaults)
+asv_cmake_defaults( )
+###############
+
 set(SNAPPY_MAJOR 1)
 set(SNAPPY_MINOR 1)
 set(SNAPPY_PATCHLEVEL 1)
@@ -102,3 +109,4 @@ INSTALL(TARGETS snappy snappy_static
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
+install_static_pdb(snappy) # ASV
