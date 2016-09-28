@@ -62,10 +62,11 @@
 // The size of an array, if known at compile-time.
 // Will give unexpected results if used on a pointer.
 // We undefine it first, since some compilers already have a definition.
-#ifdef ARRAYSIZE
-#undef ARRAYSIZE
+#ifndef ARRAYSIZE
+#define SNARRAYSIZE(a) (sizeof(a) / sizeof(*(a)))
+#else
+#define SNARRAYSIZE(a) (ARRAYSIZE(a))
 #endif
-#define ARRAYSIZE(a) (sizeof(a) / sizeof(*(a)))
 
 // Static prediction hints.
 #ifdef HAVE_BUILTIN_EXPECT

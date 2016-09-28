@@ -784,8 +784,8 @@ TEST(Snappy, IOVecEdgeCases) {
   // [  ] [ ] [    ] [        ] [        ]
   static const int kLengths[] = { 2, 1, 4, 8, 128 };
 
-  struct iovec iov[ARRAYSIZE(kLengths)];
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  struct iovec iov[SNARRAYSIZE(kLengths)];
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     iov[i].iov_base = new char[kLengths[i]];
     iov[i].iov_len = kLengths[i];
   }
@@ -830,14 +830,14 @@ TEST(Snappy, IOVecEdgeCases) {
   AppendCopy(&compressed, 17, 4);
 
   CHECK(snappy::RawUncompressToIOVec(
-      compressed.data(), compressed.size(), iov, ARRAYSIZE(iov)));
+      compressed.data(), compressed.size(), iov, SNARRAYSIZE(iov)));
   CHECK_EQ(0, memcmp(iov[0].iov_base, "ab", 2));
   CHECK_EQ(0, memcmp(iov[1].iov_base, "c", 1));
   CHECK_EQ(0, memcmp(iov[2].iov_base, "1231", 4));
   CHECK_EQ(0, memcmp(iov[3].iov_base, "23123123", 8));
   CHECK_EQ(0, memcmp(iov[4].iov_base, "123bc12", 7));
 
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     delete[] reinterpret_cast<char *>(iov[i].iov_base);
   }
 }
@@ -845,8 +845,8 @@ TEST(Snappy, IOVecEdgeCases) {
 TEST(Snappy, IOVecLiteralOverflow) {
   static const int kLengths[] = { 3, 4 };
 
-  struct iovec iov[ARRAYSIZE(kLengths)];
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  struct iovec iov[SNARRAYSIZE(kLengths)];
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     iov[i].iov_base = new char[kLengths[i]];
     iov[i].iov_len = kLengths[i];
   }
@@ -857,9 +857,9 @@ TEST(Snappy, IOVecLiteralOverflow) {
   AppendLiteral(&compressed, "12345678");
 
   CHECK(!snappy::RawUncompressToIOVec(
-      compressed.data(), compressed.size(), iov, ARRAYSIZE(iov)));
+      compressed.data(), compressed.size(), iov, SNARRAYSIZE(iov)));
 
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     delete[] reinterpret_cast<char *>(iov[i].iov_base);
   }
 }
@@ -867,8 +867,8 @@ TEST(Snappy, IOVecLiteralOverflow) {
 TEST(Snappy, IOVecCopyOverflow) {
   static const int kLengths[] = { 3, 4 };
 
-  struct iovec iov[ARRAYSIZE(kLengths)];
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  struct iovec iov[SNARRAYSIZE(kLengths)];
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     iov[i].iov_base = new char[kLengths[i]];
     iov[i].iov_len = kLengths[i];
   }
@@ -880,9 +880,9 @@ TEST(Snappy, IOVecCopyOverflow) {
   AppendCopy(&compressed, 3, 5);
 
   CHECK(!snappy::RawUncompressToIOVec(
-      compressed.data(), compressed.size(), iov, ARRAYSIZE(iov)));
+      compressed.data(), compressed.size(), iov, SNARRAYSIZE(iov)));
 
-  for (int i = 0; i < ARRAYSIZE(kLengths); ++i) {
+  for (int i = 0; i < SNARRAYSIZE(kLengths); ++i) {
     delete[] reinterpret_cast<char *>(iov[i].iov_base);
   }
 }
@@ -1270,7 +1270,7 @@ static void BM_UFlat(int iters, int arg) {
 
   // Pick file to process based on "arg"
   CHECK_GE(arg, 0);
-  CHECK_LT(arg, ARRAYSIZE(files));
+  CHECK_LT(arg, SNARRAYSIZE(files));
   string contents = ReadTestDataFile(files[arg].filename,
                                      files[arg].size_limit);
 
@@ -1289,14 +1289,14 @@ static void BM_UFlat(int iters, int arg) {
 
   delete[] dst;
 }
-BENCHMARK(BM_UFlat)->DenseRange(0, ARRAYSIZE(files) - 1);
+BENCHMARK(BM_UFlat)->DenseRange(0, SNARRAYSIZE(files) - 1);
 
 static void BM_UValidate(int iters, int arg) {
   StopBenchmarkTiming();
 
   // Pick file to process based on "arg"
   CHECK_GE(arg, 0);
-  CHECK_LT(arg, ARRAYSIZE(files));
+  CHECK_LT(arg, SNARRAYSIZE(files));
   string contents = ReadTestDataFile(files[arg].filename,
                                      files[arg].size_limit);
 
@@ -1319,7 +1319,7 @@ static void BM_UIOVec(int iters, int arg) {
 
   // Pick file to process based on "arg"
   CHECK_GE(arg, 0);
-  CHECK_LT(arg, ARRAYSIZE(files));
+  CHECK_LT(arg, SNARRAYSIZE(files));
   string contents = ReadTestDataFile(files[arg].filename,
                                      files[arg].size_limit);
 
@@ -1365,7 +1365,7 @@ static void BM_UFlatSink(int iters, int arg) {
 
   // Pick file to process based on "arg"
   CHECK_GE(arg, 0);
-  CHECK_LT(arg, ARRAYSIZE(files));
+  CHECK_LT(arg, SNARRAYSIZE(files));
   string contents = ReadTestDataFile(files[arg].filename,
                                      files[arg].size_limit);
 
@@ -1390,14 +1390,14 @@ static void BM_UFlatSink(int iters, int arg) {
   delete[] dst;
 }
 
-BENCHMARK(BM_UFlatSink)->DenseRange(0, ARRAYSIZE(files) - 1);
+BENCHMARK(BM_UFlatSink)->DenseRange(0, SNARRAYSIZE(files) - 1);
 
 static void BM_ZFlat(int iters, int arg) {
   StopBenchmarkTiming();
 
   // Pick file to process based on "arg"
   CHECK_GE(arg, 0);
-  CHECK_LT(arg, ARRAYSIZE(files));
+  CHECK_LT(arg, SNARRAYSIZE(files));
   string contents = ReadTestDataFile(files[arg].filename,
                                      files[arg].size_limit);
 
@@ -1420,7 +1420,7 @@ static void BM_ZFlat(int iters, int arg) {
                           files[arg].label, contents.size(), zsize);
   delete[] dst;
 }
-BENCHMARK(BM_ZFlat)->DenseRange(0, ARRAYSIZE(files) - 1);
+BENCHMARK(BM_ZFlat)->DenseRange(0, SNARRAYSIZE(files) - 1);
 
 }  // namespace snappy
 

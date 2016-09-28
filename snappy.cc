@@ -339,7 +339,7 @@ uint16* WorkingMemory::GetHashTable(size_t input_size, int* table_size) {
   }
 
   uint16* table;
-  if (htsize <= ARRAYSIZE(small_table_)) {
+  if (htsize <= SNARRAYSIZE(small_table_)) {
     table = small_table_;
   } else {
     if (large_table_ == NULL) {
