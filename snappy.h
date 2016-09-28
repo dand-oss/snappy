@@ -47,6 +47,7 @@
 #include <stddef.h>
 #include <string>
 
+#include "snappy-export.h"
 #include "snappy-stubs-public.h"
 
 namespace snappy {
